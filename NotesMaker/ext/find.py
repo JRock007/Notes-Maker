@@ -61,19 +61,24 @@ class Find(QtGui.QDialog):
         # By default the normal mode is activated
         self.normalRadio.setChecked(True)
 
-    def find(self):
+    def find(self, replaceSize=0):
+
+        reachedEnd = 0
 
         # Grab the parent's text
-        text = self.parent.text.toPlainText()
+        text = str(self.parent.text.toPlainText())
 
         # And the text to find
-        query = self.findField.toPlainText()
+        query = str(self.findField.toPlainText())
+
+        if not replaceSize:
+            replaceSize = len(query)
 
         if self.normalRadio.isChecked():
 
             # Use normal string search to find the query from the
             # last starting position
-            self.lastStart = text.find(query, self.lastStart + 1)
+            self.lastStart = text.find(query, self.lastStart)
 
             # If the find() method didn't return -1 (not found)
             if self.lastStart >= 0:
@@ -82,10 +87,18 @@ class Find(QtGui.QDialog):
 
                 self.moveCursor(self.lastStart, end)
 
+                if (text.find(query, self.lastStart + replaceSize) >= 0):
+                    self.lastStart += replaceSize
+                else:
+                    self.lastStart = 0
+                    reachedEnd = 1
+
             else:
 
                 # Make the next search start from the begining again
                 self.lastStart = 0
+
+                reachedEnd = 1
 
                 self.parent.text.moveCursor(QtGui.QTextCursor.End)
 
@@ -110,6 +123,8 @@ class Find(QtGui.QDialog):
                 # We set the cursor to the end if the search was unsuccessful
                 self.parent.text.moveCursor(QtGui.QTextCursor.End)
 
+        return reachedEnd
+
     def replace(self):
 
         # Grab the text cursor
@@ -129,12 +144,26 @@ class Find(QtGui.QDialog):
 
         self.lastStart = 0
 
-        self.find()
+        if (self.find()):
+            return
 
-        # Replace and find until self.lastStart is 0 again
-        while self.lastStart:
+        self.lastStart = 0
+        founds = 0
+        replaced = 0
+        reachedEnd = 0
+
+        while not reachedEnd:
+            reachedEnd = self.find()
+            founds += 1
+
+        self.lastStart = 0
+
+        # Replace and find until self.lastStart is 0 again and all of them haven't been replaced
+        while founds > replaced:
             self.replace()
-            self.find()
+            self.find(len(str(self.replaceField.toPlainText())))
+            replaced += 1
+            print(str(replaced) + "/" + str(founds))
 
     def moveCursor(self, start, end):
 
