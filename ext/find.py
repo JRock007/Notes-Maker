@@ -71,6 +71,10 @@ class Find(QtGui.QDialog):
         # And the text to find
         query = str(self.findField.toPlainText())
 
+        if text == "" or query == "":
+            reachedEnd = 1
+            return reachedEnd
+
         if not replaceSize:
             replaceSize = len(query)
 
@@ -87,11 +91,7 @@ class Find(QtGui.QDialog):
 
                 self.moveCursor(self.lastStart, end)
 
-                if (text.find(query, self.lastStart + replaceSize) >= 0):
-                    self.lastStart += replaceSize
-                else:
-                    self.lastStart = 0
-                    reachedEnd = 1
+                self.lastStart = self.lastStart + replaceSize
 
             else:
 
@@ -144,26 +144,29 @@ class Find(QtGui.QDialog):
 
         self.lastStart = 0
 
-        if (self.find()):
-            return
+        if ((not self.find()) or len(str(self.parent.text.toPlainText())) == len(str(self.findField.toPlainText()))):
 
-        self.lastStart = 0
-        founds = 0
-        replaced = 0
-        reachedEnd = 0
+            self.lastStart = 0
+            founds = 0
+            replaced = 0
+            reachedEnd = 0
 
-        while not reachedEnd:
-            reachedEnd = self.find()
-            founds += 1
+            while not reachedEnd:
+                reachedEnd = self.find(len(str(self.replaceField.toPlainText())))
+                founds += 1
 
-        self.lastStart = 0
+            self.lastStart = 0
 
-        # Replace and find until self.lastStart is 0 again and all of them haven't been replaced
-        while founds > replaced:
-            self.replace()
-            self.find(len(str(self.replaceField.toPlainText())))
-            replaced += 1
-            print(str(replaced) + "/" + str(founds))
+            # Replace and find until self.lastStart is 0 again and all of them haven't been replaced
+            while founds > replaced:
+
+                if self.find(len(str(self.replaceField.toPlainText()))):
+
+                    self.lastStart = 0
+                    self.find(len(str(self.replaceField.toPlainText())))
+
+                self.replace()
+                replaced += 1
 
     def moveCursor(self, start, end):
 
