@@ -1,4 +1,4 @@
-This code is based on the following tutorial:
+This app is based on the following tutorial:
 
     ##Tutorials
 

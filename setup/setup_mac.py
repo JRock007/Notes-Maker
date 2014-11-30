@@ -7,9 +7,7 @@ from setuptools import setup
 
 APP = ['NotesMaker.py']
 
-DATA_FILES = [('example.nmkr'),
-              ('LICENSE'),
-              ('README.md'),
+DATA_FILES = [('LICENSE'),
 
               ('ext', ['ext/__init__.py']),
               ('ext', ['ext/datetime.py']),

@@ -294,7 +294,7 @@ class Main(QtGui.QMainWindow):
         self.text.textChanged.connect(self.changed)
 
         self.setGeometry(100, 100, 1030, 800)
-        self.setWindowTitle("Writer")
+        self.setWindowTitle("Notes Maker")
         self.setWindowIcon(QtGui.QIcon("icons/icon.png"))
 
     def changed(self):
