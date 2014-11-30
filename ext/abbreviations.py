@@ -138,8 +138,6 @@ class Abbreviations(QtGui.QDialog):
             replaced = 0
             reachedEnd = 0
 
-            print i, "->", self.data[i]
-
             if (not self.find(str(i))) or (len(str(self.parent.text.toPlainText())) == len(str(i))):
 
                 self.lastStart = 0
@@ -148,7 +146,6 @@ class Abbreviations(QtGui.QDialog):
                     reachedEnd = self.find(str(i))
                     founds += 1
 
-                print founds
                 self.lastStart = 0
 
                 # Replace and find until self.lastStart is 0 again and all of them haven't been replaced
@@ -181,8 +178,6 @@ class Abbreviations(QtGui.QDialog):
 class ListEditor(QtGui.QWidget):
 
     def __init__(self, parent=None):
-
-        print "init"
 
         QtGui.QDialog.__init__(self, parent)
 
@@ -281,7 +276,6 @@ class ListEditor(QtGui.QWidget):
         try:
 
             data = ast.literal_eval(str(self.abbreviationField.toPlainText()))
-            print data
             self.close()
 
         except:

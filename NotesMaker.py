@@ -3,6 +3,7 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import Qt
 
 from ext import find
+from ext import abbreviations
 from ext import datetime
 from ext import table
 from ext import wordcount
@@ -39,7 +40,7 @@ class Main(QtGui.QMainWindow):
         self.convertAction = QtGui.QAction(QtGui.QIcon("icons/abbreviations.png"), "Replace abbreviations", self)
         self.convertAction.setStatusTip("Replace abbreviations")
         self.convertAction.setShortcut("Ctrl+I")
-        self.convertAction.triggered.connect(self.abbreviations)
+        self.convertAction.triggered.connect(abbreviations.Abbreviations(self).show)
 
         self.printAction = QtGui.QAction(QtGui.QIcon("icons/print.png"), "Print document", self)
         self.printAction.setStatusTip("Print document")
@@ -339,9 +340,6 @@ class Main(QtGui.QMainWindow):
 
             else:
                 event.ignore()
-
-    def abbreviations(self):
-        pass
 
     def context(self, pos):
 
