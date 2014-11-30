@@ -36,6 +36,11 @@ class Main(QtGui.QMainWindow):
         self.saveAction.setShortcut("Ctrl+S")
         self.saveAction.triggered.connect(self.save)
 
+        self.convertAction = QtGui.QAction(QtGui.QIcon("icons/abbreviations.png"), "Replace abbreviations", self)
+        self.convertAction.setStatusTip("Replace abbreviations")
+        self.convertAction.setShortcut("Ctrl+I")
+        self.convertAction.triggered.connect(self.abbreviations)
+
         self.printAction = QtGui.QAction(QtGui.QIcon("icons/print.png"), "Print document", self)
         self.printAction.setStatusTip("Print document")
         self.printAction.setShortcut("Ctrl+P")
@@ -111,6 +116,7 @@ class Main(QtGui.QMainWindow):
         self.toolbar.addAction(self.newAction)
         self.toolbar.addAction(self.openAction)
         self.toolbar.addAction(self.saveAction)
+        self.toolbar.addAction(self.convertAction)
 
         self.toolbar.addSeparator()
 
@@ -242,6 +248,7 @@ class Main(QtGui.QMainWindow):
         file.addAction(self.newAction)
         file.addAction(self.openAction)
         file.addAction(self.saveAction)
+        file.addAction(self.convertAction)
         file.addAction(self.printAction)
         file.addAction(self.previewAction)
 
@@ -332,6 +339,9 @@ class Main(QtGui.QMainWindow):
 
             else:
                 event.ignore()
+
+    def abbreviations(self):
+        pass
 
     def context(self, pos):
 
