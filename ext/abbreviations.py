@@ -234,6 +234,8 @@ class ListEditor(QtGui.QWidget):
 
                 self.data = json.load(data_file)
 
+            self.oldData = self.data
+
             self.abbreviationField.append(str(json.dumps(self.data)))
 
         except ValueError:
@@ -271,7 +273,7 @@ class ListEditor(QtGui.QWidget):
 
     def save(self):
 
-        data = []
+        data = self.oldData
 
         try:
 
