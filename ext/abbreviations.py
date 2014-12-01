@@ -1,6 +1,7 @@
 from PyQt4 import QtGui
 import json
 import ast
+import re
 
 
 class Abbreviations(QtGui.QDialog):
@@ -78,6 +79,7 @@ class Abbreviations(QtGui.QDialog):
 
     def find(self, query, replaceSize=0):
 
+        end = 0
         reachedEnd = 0
 
         # Grab the parent's text
@@ -90,16 +92,24 @@ class Abbreviations(QtGui.QDialog):
         if not replaceSize:
             replaceSize = len(query)
 
-        self.lastStart = text.find(query, self.lastStart)
+        p = re.compile(r'(?:^|\W)(%s)(?:\W|$)' % re.escape(query), re.I)
+        m = p.search(text, self.lastStart)
+
+        if m:
+
+            self.lastStart = m.start(1)
+        else:
+
+            self.lastStart = -1
 
         # If the find() method didn't return -1 (not found)
         if self.lastStart >= 0:
 
-            end = self.lastStart + replaceSize
+            end = m.end(1)
 
             self.moveCursor(self.lastStart, end)
 
-            self.lastStart = self.lastStart + replaceSize
+            self.lastStart = end
 
         else:
 
