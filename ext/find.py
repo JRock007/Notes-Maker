@@ -120,6 +120,8 @@ class Find(QtGui.QDialog):
 
                 self.lastStart = 0
 
+                reachedEnd = 1
+
                 # We set the cursor to the end if the search was unsuccessful
                 self.parent.text.moveCursor(QtGui.QTextCursor.End)
 
