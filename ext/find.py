@@ -63,6 +63,8 @@ class Find(QtGui.QDialog):
 
     def find(self, replaceSize=0):
 
+        self.moveCursor(self.lastStart, self.lastStart)
+
         reachedEnd = 0
 
         # Grab the parent's text
