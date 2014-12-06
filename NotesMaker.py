@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import sys
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import Qt
@@ -57,21 +59,6 @@ class Main(QtGui.QMainWindow):
         self.findAction.setShortcut("Ctrl+F")
         self.findAction.triggered.connect(find.Find(self).show)
 
-        self.cutAction = QtGui.QAction(QtGui.QIcon("icons/cut.png"), "Cut to clipboard", self)
-        self.cutAction.setStatusTip("Delete and copy text to clipboard")
-        self.cutAction.setShortcut("Ctrl+X")
-        self.cutAction.triggered.connect(self.text.cut)
-
-        self.copyAction = QtGui.QAction(QtGui.QIcon("icons/copy.png"), "Copy to clipboard", self)
-        self.copyAction.setStatusTip("Copy text to clipboard")
-        self.copyAction.setShortcut("Ctrl+C")
-        self.copyAction.triggered.connect(self.text.copy)
-
-        self.pasteAction = QtGui.QAction(QtGui.QIcon("icons/paste.png"), "Paste from clipboard", self)
-        self.pasteAction.setStatusTip("Paste text from clipboard")
-        self.pasteAction.setShortcut("Ctrl+V")
-        self.pasteAction.triggered.connect(self.text.paste)
-
         self.undoAction = QtGui.QAction(QtGui.QIcon("icons/undo.png"), "Undo last action", self)
         self.undoAction.setStatusTip("Undo last action")
         self.undoAction.setShortcut("Ctrl+Z")
@@ -81,16 +68,6 @@ class Main(QtGui.QMainWindow):
         self.redoAction.setStatusTip("Redo last undone thing")
         self.redoAction.setShortcut("Ctrl+Y")
         self.redoAction.triggered.connect(self.text.redo)
-
-        dateTimeAction = QtGui.QAction(QtGui.QIcon("icons/calender.png"), "Insert current date/time", self)
-        dateTimeAction.setStatusTip("Insert current date/time")
-        dateTimeAction.setShortcut("Ctrl+D")
-        dateTimeAction.triggered.connect(datetime.DateTime(self).show)
-
-        wordCountAction = QtGui.QAction(QtGui.QIcon("icons/count.png"), "See word/symbol count", self)
-        wordCountAction.setStatusTip("See word/symbol count")
-        wordCountAction.setShortcut("Ctrl+Shift+W")
-        wordCountAction.triggered.connect(self.wordCount)
 
         tableAction = QtGui.QAction(QtGui.QIcon("icons/table.png"), "Insert table", self)
         tableAction.setStatusTip("Insert table")
@@ -111,43 +88,6 @@ class Main(QtGui.QMainWindow):
         numberedAction.setStatusTip("Insert numbered list")
         numberedAction.setShortcut("Ctrl+Shift+L")
         numberedAction.triggered.connect(self.numberList)
-
-        self.toolbar = self.addToolBar("Options")
-
-        self.toolbar.addAction(self.newAction)
-        self.toolbar.addAction(self.openAction)
-        self.toolbar.addAction(self.saveAction)
-        self.toolbar.addAction(self.convertAction)
-
-        self.toolbar.addSeparator()
-
-        self.toolbar.addAction(self.printAction)
-        self.toolbar.addAction(self.previewAction)
-
-        self.toolbar.addSeparator()
-
-        self.toolbar.addAction(self.cutAction)
-        self.toolbar.addAction(self.copyAction)
-        self.toolbar.addAction(self.pasteAction)
-        self.toolbar.addAction(self.undoAction)
-        self.toolbar.addAction(self.redoAction)
-
-        self.toolbar.addSeparator()
-
-        self.toolbar.addAction(self.findAction)
-        self.toolbar.addAction(dateTimeAction)
-        self.toolbar.addAction(wordCountAction)
-        self.toolbar.addAction(tableAction)
-        self.toolbar.addAction(imageAction)
-
-        self.toolbar.addSeparator()
-
-        self.toolbar.addAction(bulletAction)
-        self.toolbar.addAction(numberedAction)
-
-        self.addToolBarBreak()
-
-    def initFormatbar(self):
 
         fontBox = QtGui.QFontComboBox(self)
         fontBox.currentFontChanged.connect(lambda font: self.text.setCurrentFont(font))
@@ -194,47 +134,52 @@ class Main(QtGui.QMainWindow):
         alignJustify = QtGui.QAction(QtGui.QIcon("icons/align-justify.png"), "Align justify", self)
         alignJustify.triggered.connect(self.alignJustify)
 
-        indentAction = QtGui.QAction(QtGui.QIcon("icons/indent.png"), "Indent Area", self)
-        indentAction.setShortcut("Ctrl+Tab")
-        indentAction.triggered.connect(self.indent)
-
-        dedentAction = QtGui.QAction(QtGui.QIcon("icons/dedent.png"), "Dedent Area", self)
-        dedentAction.setShortcut("Shift+Tab")
-        dedentAction.triggered.connect(self.dedent)
-
         backColor = QtGui.QAction(QtGui.QIcon("icons/highlight.png"), "Change background color", self)
         backColor.triggered.connect(self.highlight)
 
-        self.formatbar = self.addToolBar("Format")
+        self.toolbar = self.addToolBar("Options")
 
-        self.formatbar.addWidget(fontBox)
-        self.formatbar.addWidget(fontSize)
+        self.toolbar.addWidget(fontBox)
+        self.toolbar.addWidget(fontSize)
 
-        self.formatbar.addSeparator()
+        self.toolbar.addSeparator()
 
-        self.formatbar.addAction(fontColor)
-        self.formatbar.addAction(backColor)
+        self.toolbar.addAction(boldAction)
+        self.toolbar.addAction(italicAction)
+        self.toolbar.addAction(underlAction)
+        self.toolbar.addAction(strikeAction)
 
-        self.formatbar.addSeparator()
+        self.toolbar.addSeparator()
 
-        self.formatbar.addAction(boldAction)
-        self.formatbar.addAction(italicAction)
-        self.formatbar.addAction(underlAction)
-        self.formatbar.addAction(strikeAction)
-        self.formatbar.addAction(superAction)
-        self.formatbar.addAction(subAction)
+        self.toolbar.addAction(fontColor)
+        self.toolbar.addAction(backColor)
 
-        self.formatbar.addSeparator()
+        self.toolbar.addSeparator()
 
-        self.formatbar.addAction(alignLeft)
-        self.formatbar.addAction(alignCenter)
-        self.formatbar.addAction(alignRight)
-        self.formatbar.addAction(alignJustify)
+        self.toolbar.addAction(alignLeft)
+        self.toolbar.addAction(alignCenter)
+        self.toolbar.addAction(alignRight)
+        self.toolbar.addAction(alignJustify)
 
-        self.formatbar.addSeparator()
+        self.toolbar.addSeparator()
 
-        self.formatbar.addAction(indentAction)
-        self.formatbar.addAction(dedentAction)
+        self.toolbar.addAction(superAction)
+        self.toolbar.addAction(subAction)
+
+        self.toolbar.addSeparator()
+
+        self.toolbar.addAction(self.findAction)
+        self.toolbar.addAction(self.convertAction)
+
+        self.toolbar.addSeparator()
+
+        self.toolbar.addAction(tableAction)
+        self.toolbar.addAction(imageAction)
+
+        self.toolbar.addSeparator()
+
+        self.toolbar.addAction(bulletAction)
+        self.toolbar.addAction(numberedAction)
 
     def initMenubar(self):
 
@@ -244,35 +189,49 @@ class Main(QtGui.QMainWindow):
         edit = menubar.addMenu("Edit")
         view = menubar.addMenu("View")
 
+        indentAction = QtGui.QAction(QtGui.QIcon("icons/indent.png"), "Indent Area", self)
+        indentAction.setShortcut("Ctrl+Tab")
+        indentAction.triggered.connect(self.indentAction)
+
+        dedentAction = QtGui.QAction(QtGui.QIcon("icons/dedent.png"), "Dedent Area", self)
+        dedentAction.setShortcut("Shift+Tab")
+        dedentAction.triggered.connect(self.dedentAction)
+
+        dateTimeAction = QtGui.QAction(QtGui.QIcon("icons/calender.png"), "Insert current date/time", self)
+        dateTimeAction.setStatusTip("Insert current date/time")
+        dateTimeAction.setShortcut("Ctrl+D")
+        dateTimeAction.triggered.connect(datetime.DateTime(self).show)
+
+        wordCountAction = QtGui.QAction(QtGui.QIcon("icons/count.png"), "See word/symbol count", self)
+        wordCountAction.setStatusTip("See word/symbol count")
+        wordCountAction.setShortcut("Ctrl+Shift+W")
+        wordCountAction.triggered.connect(self.wordCount)
+
         # Add the most important actions to the menubar
 
         file.addAction(self.newAction)
         file.addAction(self.openAction)
         file.addAction(self.saveAction)
-        file.addAction(self.convertAction)
+        file.addSeparator()
         file.addAction(self.printAction)
         file.addAction(self.previewAction)
 
         edit.addAction(self.undoAction)
         edit.addAction(self.redoAction)
-        edit.addAction(self.cutAction)
-        edit.addAction(self.copyAction)
-        edit.addAction(self.pasteAction)
+        edit.addSeparator()
         edit.addAction(self.findAction)
+        edit.addAction(self.convertAction)
+        edit.addSeparator()
+        edit.addAction(indentAction)
+        edit.addAction(dedentAction)
+        edit.addAction(dateTimeAction)
+        edit.addAction(wordCountAction)
 
         # Toggling actions for the various bars
         toolbarAction = QtGui.QAction("Toggle Toolbar", self)
         toolbarAction.triggered.connect(self.toggleToolbar)
 
-        formatbarAction = QtGui.QAction("Toggle Formatbar", self)
-        formatbarAction.triggered.connect(self.toggleFormatbar)
-
-        statusbarAction = QtGui.QAction("Toggle Statusbar", self)
-        statusbarAction.triggered.connect(self.toggleStatusbar)
-
         view.addAction(toolbarAction)
-        view.addAction(formatbarAction)
-        view.addAction(statusbarAction)
 
     def initUI(self):
 
@@ -283,7 +242,6 @@ class Main(QtGui.QMainWindow):
         self.text.setTabStopWidth(33)
 
         self.initToolbar()
-        self.initFormatbar()
         self.initMenubar()
 
         self.setCentralWidget(self.text)
@@ -422,9 +380,6 @@ class Main(QtGui.QMainWindow):
             if self.toolbar.isVisible():
                 pos.setY(pos.y() + 45)
 
-            if self.formatbar.isVisible():
-                pos.setY(pos.y() + 45)
-
             # Move the menu to the new position
             menu.move(pos)
 
@@ -502,13 +457,6 @@ class Main(QtGui.QMainWindow):
 
         # Set the visibility to its inverse
         self.toolbar.setVisible(not state)
-
-    def toggleFormatbar(self):
-
-        state = self.formatbar.isVisible()
-
-        # Set the visibility to its inverse
-        self.formatbar.setVisible(not state)
 
     def toggleStatusbar(self):
 
@@ -712,7 +660,7 @@ class Main(QtGui.QMainWindow):
     def alignJustify(self):
         self.text.setAlignment(Qt.AlignJustify)
 
-    def indent(self):
+    def indentAction(self):
 
         # Grab the cursor
         cursor = self.text.textCursor()
@@ -769,7 +717,7 @@ class Main(QtGui.QMainWindow):
 
                 cursor.deleteChar()
 
-    def dedent(self):
+    def dedentAction(self):
 
         cursor = self.text.textCursor()
 
@@ -821,4 +769,11 @@ def main():
     sys.exit(app.exec_())
 
 if __name__ == "__main__":
+
+    # Remove line to keep default style from platform
+    QtGui.QApplication.setStyle(QtGui.QStyleFactory.create("cleanlooks"))
+
+    if QtGui.QApplication.style():
+        QtGui.QApplication.setPalette(QtGui.QApplication.style().standardPalette())
+
     main()
