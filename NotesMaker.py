@@ -202,6 +202,14 @@ class Main(QtGui.QMainWindow):
         dateTimeAction.setShortcut("Ctrl+D")
         dateTimeAction.triggered.connect(datetime.DateTime(self).show)
 
+        rightArrowAction = QtGui.QAction(QtGui.QIcon("icons/number.png"), "Insert right arrow", self)
+        rightArrowAction.setShortcut(Qt.CTRL + Qt.Key_Right)
+        rightArrowAction.triggered.connect(self.rightArrowAction)
+
+        leftArrowAction = QtGui.QAction(QtGui.QIcon("icons/number.png"), "Insert left arrow", self)
+        leftArrowAction.setShortcut(Qt.CTRL + Qt.Key_Left)
+        leftArrowAction.triggered.connect(self.leftArrowAction)
+
         wordCountAction = QtGui.QAction(QtGui.QIcon("icons/count.png"), "See word/symbol count", self)
         wordCountAction.setStatusTip("See word/symbol count")
         wordCountAction.setShortcut("Ctrl+Shift+W")
@@ -225,6 +233,8 @@ class Main(QtGui.QMainWindow):
         edit.addAction(indentAction)
         edit.addAction(dedentAction)
         edit.addAction(dateTimeAction)
+        edit.addAction(rightArrowAction)
+        edit.addAction(leftArrowAction)
         edit.addAction(wordCountAction)
 
         # Toggling actions for the various bars
@@ -263,6 +273,9 @@ class Main(QtGui.QMainWindow):
         self.setWindowTitle("Notes Maker")
         self.setWindowIcon(QtGui.QIcon("icons/icon.png"))
 
+        self.show()
+        self.raise_()
+
     def changed(self):
         self.changesSaved = False
 
@@ -298,6 +311,28 @@ class Main(QtGui.QMainWindow):
 
             else:
                 event.ignore()
+
+    def rightArrowAction(self):
+
+        # Grab the text cursor
+        cursor = self.text.textCursor()
+
+        # Security
+        if cursor:
+
+            # We insert the arrow
+            cursor.insertText(" -> ")
+
+    def leftArrowAction(self):
+
+        # Grab the text cursor
+        cursor = self.text.textCursor()
+
+        # Security
+        if cursor:
+
+            # We insert the arrow
+            cursor.insertText(" <- ")
 
     def context(self, pos):
 
@@ -477,7 +512,7 @@ class Main(QtGui.QMainWindow):
         self.filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', ".", "(*.nmkr)")
 
         if self.filename:
-            with open(self.filename, "rt") as file:
+            with open(self.filename, "r") as file:
                 self.text.setText(file.read())
 
     def save(self):
@@ -494,7 +529,7 @@ class Main(QtGui.QMainWindow):
 
             # We just store the contents of the text file along with the
             # format in html, which Qt does in a very nice way for us
-            with open(self.filename, "wt") as file:
+            with open(self.filename, "w") as file:
                 file.write(self.text.toHtml())
 
             self.changesSaved = True
