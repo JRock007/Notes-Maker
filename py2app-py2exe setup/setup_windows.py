@@ -3,13 +3,6 @@ import py2exe
 import os
 
 DATA_FILES = [('LICENSE'),
-
-              ('ext', ['ext/__init__.py']),
-              ('ext', ['ext/datetime.py']),
-              ('ext', ['ext/find.py']),
-              ('ext', ['ext/table.py']),
-              ('ext', ['ext/wordcount.py']),
-
               ('icons', ['icons/abbreviations.png']),
               ('icons', ['icons/align-center.png']),
               ('icons', ['icons/align-center.png']),
