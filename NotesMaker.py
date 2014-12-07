@@ -295,21 +295,25 @@ class Main(QtGui.QMainWindow):
 
             popup.setInformativeText("Do you want to save your changes?")
 
-            popup.setStandardButtons(QtGui.QMessageBox.Save |
-                                     QtGui.QMessageBox.Cancel |
-                                     QtGui.QMessageBox.Discard)
+            saveButton = QtGui.QPushButton("Save")
+            discardButton = QtGui.QPushButton("Discard")
+            cancelButton = QtGui.QPushButton("Cancel")
 
-            popup.setDefaultButton(QtGui.QMessageBox.Save)
+            popup.addButton(saveButton, QtGui.QMessageBox.YesRole)
+            popup.addButton(discardButton, QtGui.QMessageBox.NoRole)
+            popup.addButton(cancelButton, QtGui.QMessageBox.RejectRole)
+
+            popup.setDefaultButton(saveButton)
 
             answer = popup.exec_()
 
-            if answer == QtGui.QMessageBox.Save:
+            if answer == 0:  # Save button
                 self.save()
 
-            elif answer == QtGui.QMessageBox.Discard:
+            elif answer == 1:  # Discard button
                 event.accept()
 
-            else:
+            else:  # Cancel button
                 event.ignore()
 
     def rightArrowAction(self):
@@ -509,7 +513,7 @@ class Main(QtGui.QMainWindow):
     def open(self):
 
         # Get filename and show only .nmkr files
-        self.filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', ".", "(*.nmkr)")
+        self.filename = QtGui.QFileDialog.getOpenFileName(self, "Open File", ".", "(*.nmkr)")
 
         if self.filename:
             with open(self.filename, "r") as file:
@@ -519,7 +523,7 @@ class Main(QtGui.QMainWindow):
 
         # Only open dialog if there is no filename yet
         if not self.filename:
-            self.filename = QtGui.QFileDialog.getSaveFileName(self, 'Save File')
+            self.filename = QtGui.QFileDialog.getSaveFileName(self, "Save File")
 
         if self.filename:
 
@@ -573,7 +577,7 @@ class Main(QtGui.QMainWindow):
     def insertImage(self):
 
         # Get image file name
-        filename = QtGui.QFileDialog.getOpenFileName(self, 'Insert image', ".", "Images (*.png *.xpm *.jpg *.bmp *.gif)")
+        filename = QtGui.QFileDialog.getOpenFileName(self, "Insert image", ".", "Images (*.png *.xpm *.jpg *.bmp *.gif)")
 
         if filename:
 
