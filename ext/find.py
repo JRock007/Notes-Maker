@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from PyQt4 import QtGui
 import re
 
@@ -68,10 +70,10 @@ class Find(QtGui.QDialog):
         reachedEnd = 0
 
         # Grab the parent's text
-        text = str(self.parent.text.toPlainText())
+        text = unicode(self.parent.text.toPlainText())
 
         # And the text to find
-        query = str(self.findField.toPlainText())
+        query = unicode(self.findField.toPlainText())
 
         if text == "" or query == "":
             reachedEnd = 1
@@ -148,27 +150,16 @@ class Find(QtGui.QDialog):
 
         self.lastStart = 0
 
-        if ((not self.find()) or len(str(self.parent.text.toPlainText())) == len(str(self.findField.toPlainText()))):
+        if ((not self.find()) or len(unicode(self.parent.text.toPlainText())) == len(unicode(self.findField.toPlainText()))):
 
             self.lastStart = 0
-            founds = 0
             replaced = 0
-            reachedEnd = 0
-
-            while not reachedEnd:
-                reachedEnd = self.find(len(str(self.replaceField.toPlainText())))
-                founds += 1
-
-            self.lastStart = 0
+            count = unicode(self.parent.text.toPlainText()).count(unicode(self.findField.toPlainText()))
 
             # Replace and find until self.lastStart is 0 again and all of them haven't been replaced
-            while founds > replaced:
+            while count > replaced:
 
-                if self.find(len(str(self.replaceField.toPlainText()))):
-
-                    self.lastStart = 0
-                    self.find(len(str(self.replaceField.toPlainText())))
-
+                self.find()
                 self.replace()
                 replaced += 1
 

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from PyQt4 import QtGui
 import json
 import ast
@@ -33,7 +35,7 @@ class Abbreviations(QtGui.QDialog):
     def loadJson(self):
         try:
 
-            with open('abbreviations.json') as data_file:
+            with open("abbreviations.json") as data_file:
 
                 self.data = json.load(data_file)
 
@@ -83,7 +85,7 @@ class Abbreviations(QtGui.QDialog):
         reachedEnd = 0
 
         # Grab the parent's text
-        text = str(self.parent.text.toPlainText())
+        text = unicode(self.parent.text.toPlainText())
 
         if text == "" or query == "":
             reachedEnd = 1
@@ -144,28 +146,17 @@ class Abbreviations(QtGui.QDialog):
         for i in self.data:
 
             self.lastStart = 0
-            founds = 0
-            replaced = 0
-            reachedEnd = 0
 
-            if (not self.find(str(i))) or (len(str(self.parent.text.toPlainText())) == len(str(i))):
+            if ((not self.find(unicode(i))) or len(unicode(self.parent.text.toPlainText())) == len(unicode(i))):
 
                 self.lastStart = 0
-
-                while not reachedEnd:
-                    reachedEnd = self.find(str(i))
-                    founds += 1
-
-                self.lastStart = 0
+                replaced = 0
+                count = unicode(self.parent.text.toPlainText()).count(unicode(i))
 
                 # Replace and find until self.lastStart is 0 again and all of them haven't been replaced
-                while founds > replaced:
+                while count > replaced:
 
-                    if self.find(str(i)):
-
-                        self.lastStart = 0
-                        self.find(str(i))
-
+                    self.find(unicode(i))
                     self.replace(self.data[i][0])
                     replaced += 1
 
@@ -246,7 +237,7 @@ class ListEditor(QtGui.QWidget):
 
             self.oldData = self.data
 
-            self.abbreviationField.append(str(json.dumps(self.data)))
+            self.abbreviationField.append(unicode(json.dumps(self.data)))
 
         except ValueError:
             self.displayJsonError()
@@ -287,7 +278,7 @@ class ListEditor(QtGui.QWidget):
 
         try:
 
-            data = ast.literal_eval(str(self.abbreviationField.toPlainText()))
+            data = ast.literal_eval(unicode(self.abbreviationField.toPlainText()))
             self.close()
 
         except:
