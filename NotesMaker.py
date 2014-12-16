@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 import sys
@@ -273,6 +274,7 @@ class Main(QtGui.QMainWindow):
         self.setWindowTitle("Notes Maker")
         self.setWindowIcon(QtGui.QIcon("icons/icon.png"))
 
+        self.setWindowState(QtCore.Qt.WindowMaximized)
         self.show()
         self.raise_()
 
