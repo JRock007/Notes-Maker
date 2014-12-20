@@ -241,8 +241,11 @@ class Main(QtGui.QMainWindow):
         # Toggling actions for the various bars
         toolbarAction = QtGui.QAction("Toggle Toolbar", self)
         toolbarAction.triggered.connect(self.toggleToolbar)
+        statusbarAction = QtGui.QAction("Toggle Statusbar", self)
+        statusbarAction.triggered.connect(self.toggleStatusbar)
 
         view.addAction(toolbarAction)
+        view.addAction(statusbarAction)
 
     def initUI(self):
 
