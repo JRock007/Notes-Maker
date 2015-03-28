@@ -2,7 +2,7 @@
 
 Notes maker is a simple text editor made in python using the PyQt library.
 It has all the basic features of a text editor, like text color, different fonts and sizes and more.
-However, it also has a unique feature: it allows you to input a list of abbreviations you use (saved in a json file), an it will automagically replace all of them for you in 2 clicks.
+However, it also has a unique feature: it allows you to input a list of abbreviations you use (saved in a json file), and it will automagically replace all of them for you in 2 clicks.
 
 This app is based on the following tutorial:
 
